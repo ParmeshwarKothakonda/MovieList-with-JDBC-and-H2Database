@@ -52,15 +52,18 @@ public class MovieH2Service implements MovieRepository{
         
         
         try{
+            Movie existingMovie = db.queryForObject("select * from movielist where movieId = ?" new MovieRowMapper(), movieId);
+            
+            if(existingMovie != null){
 
-            if(movie.getMovieName() != null){
-                db.update("update movielist set movieName = ? where movieId = ?", movie.getMovieName(), movieId);
-            }
-            if(movie.getLeadActor() != null){
-                db.update("update movielist set leadActor = ? where movieId = ?", movie.getLeadActor(), movieId);
-            }
-
-            return getMovieById(movieId);
+                if(movie.getMovieName() != null){
+                    db.update("update movielist set movieName = ? where movieId = ?", movie.getMovieName(), movieId);
+                }
+                if(movie.getLeadActor() != null){
+                    db.update("update movielist set leadActor = ? where movieId = ?", movie.getLeadActor(), movieId);
+                }
+           }
+                return getMovieById(movieId);
 
         }
         catch(Exception e){
